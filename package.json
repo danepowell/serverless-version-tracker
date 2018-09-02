@@ -1,0 +1,31 @@
+{
+  "name": "serverless-version-tracker",
+  "version": "1.0.0",
+  "description": "Simple serverless plugin for tracking deployed versions of code",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/danepowell/serverless-version-tracker.git"
+  },
+  "keywords": [
+    "serverless",
+    "serverless-plugin",
+    "aws",
+    "nodejs",
+    "deployment"
+  ],
+  "author": "Dane Powell <git@danepowell.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/danepowell/serverless-version-tracker/issues"
+  },
+  "homepage": "https://github.com/danepowell/serverless-version-tracker#readme",
+  "devDependencies": {
+    "eslint": "^5.5.0",
+    "eslint-config-airbnb-base": "^13.1.0",
+    "eslint-plugin-import": "^2.14.0"
+  }
+}
