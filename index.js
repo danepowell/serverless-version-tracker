@@ -10,8 +10,23 @@ class ServerlessPlugin {
     this.stage = this.options.stage || this.serverless.service.provider.stage;
 
     this.hooks = {
+      'before:package:initialize': this.checkClean.bind(this),
       'after:deploy:deploy': this.tagVersion.bind(this),
     };
+  }
+
+  checkClean() {
+    if (this.stage !== 'production') {
+      return;
+    }
+    exec('git status --porcelain', (err, stdout, stderr) => {
+      if (err || stderr) {
+        throw new Error(`err: ${err}; stderr: ${stderr}`);
+      }
+      if (stdout) {
+        throw new Error('Working directory is not clean. Commit all changes to Git and try again.');
+      }
+    });
   }
 
   async tagVersion() {
