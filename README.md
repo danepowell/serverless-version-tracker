@@ -24,12 +24,15 @@ plugins:
 
 ## Configuration
 
-There is currently no configuration. TODO: allow configuration to only run on certain stages (i.e. prod).
+There is currently no configuration.
 
 ## Usage
 
-This plugin has a super simple function: after you run `serverless deploy`, it will create a local git tag based on the version of the Lambda function that you just deployed. For instance, if your function is named `foo-development-index` and a deploy creates Lambda version 56, this plugin will automatically create a local git tag `foo-development-index-56`.
+This plugin has a super simple function: after you run `serverless deploy`, it will create a local git tag based on the version of the Lambda function that you just deployed. For instance, if your function is named `foo-production-index` and a deploy creates Lambda version 56, this plugin will automatically create a local git tag `foo-production-index-56`.
+
+This plugin currently only runs on production deployments.
 
 ## Todo
 - Enforce a clean git directory before allowing deploys (to prevent deploying untraceable / volatile code)
 - Add to npm and serverless-plugin repo
+- Allow configuration to run on stages other than `production`.

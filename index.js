@@ -15,6 +15,9 @@ class ServerlessPlugin {
   }
 
   async tagVersion() {
+    if (this.stage !== 'production') {
+      return;
+    }
     const arn = await this.getArn();
     const regex = /([-\w]*):(\d*)$/;
     const name = arn.match(regex)[1];
