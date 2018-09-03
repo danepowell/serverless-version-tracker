@@ -1,6 +1,8 @@
 # Serverless Version Tracker
 A serverless plugin for tracking deployed versions of your code.
 
+This plugin has a super simple function: after you run `serverless deploy`, it will create a local git tag based on the version of the Lambda function that you just deployed. For instance, if your function is named `foo-production-index` and a deploy creates Lambda version 56, this plugin will automatically create a local git tag `foo-production-index-56`.
+
 ## Installation
 
 #### Install using Serverless plugin manager
@@ -24,15 +26,10 @@ plugins:
 
 ## Configuration
 
-There is currently no configuration.
+By default, this plugin only runs for deployments to the production stage. If you'd like to customize this behavior, you can set the `versionTrackerStages` custom variable.
 
 ## Usage
 
-This plugin has a super simple function: after you run `serverless deploy`, it will create a local git tag based on the version of the Lambda function that you just deployed. For instance, if your function is named `foo-production-index` and a deploy creates Lambda version 56, this plugin will automatically create a local git tag `foo-production-index-56`.
-
-This plugin currently only runs on production deployments.
-
-## Todo
-- Enforce a clean git directory before allowing deploys (to prevent deploying untraceable / volatile code)
-- Add to npm and serverless-plugin repo
-- Allow configuration to run on stages other than `production`.
+1. Ensure that you have committed all of your changes to Git. The deploy will be aborted if the Git working directory is not clean. This prevents the possibility of deploying uncommitted / untraceable / volatile code.
+2. Run a deploy as normal (i.e. `sls deploy --stage production`). The plugin will automatically tag your local Git repository with the Lambda function name and new version.
+3. Make sure to push the new tag to your remote repository (the plugin won't do this for you).
