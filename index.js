@@ -35,6 +35,9 @@ class ServerlessPlugin {
       return;
     }
     const arn = await this.getArn();
+    if (arn === undefined) {
+      throw new Error('Serverless Version Tracker error: cannot retrieve deployed ARN');
+    }
     const regex = /([-\w]*):(\d*)$/;
     const name = arn.match(regex)[1];
     const version = arn.match(regex)[2];
@@ -50,7 +53,12 @@ class ServerlessPlugin {
     const resp = await this.provider.request('CloudFormation', 'describeStacks', { StackName: this.provider.naming.getStackName(this.stage) });
     const output = resp.Stacks[0].Outputs;
     let arn;
-    const arns = output.filter(entry => entry.OutputKey.match('ApiLambdaFunctionQualifiedArn'));
+    let arns;
+    try {
+      arns = output.filter(entry => entry.OutputKey.match('LambdaFunctionQualifiedArn'));
+    } catch (error) {
+      return arn;
+    }
     arns.forEach((entry) => { arn = entry.OutputValue; });
     return arn;
   }
