@@ -3,6 +3,8 @@ A serverless plugin for tracking deployed versions of your code.
 
 This plugin has a super simple function: after you run `serverless deploy`, it will create a local git tag based on the version of the Lambda function that you just deployed. For instance, if your function is named `foo-production-index` and a deploy creates Lambda version 56, this plugin will automatically create a local git tag `foo-production-index-56`.
 
+This guarantees that you always know exactly what version of your source code is actually running in the cloud.
+
 ## Installation
 
 #### Install using Serverless plugin manager
