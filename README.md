@@ -1,13 +1,27 @@
 # Serverless Version Tracker
 A serverless plugin for tracking deployed versions of your code.
 
+## Description
 This plugin has a super simple function: after you run `serverless deploy`, it will create a local git tag based on the version of the Lambda function that you just deployed. For instance, if your function is named `foo-production-index` and a deploy creates Lambda version 56, this plugin will automatically create a local git tag `foo-production-index-56`.
 
 This guarantees that you always know exactly what version of your source code is actually running in the cloud.
 
-## Installation
+## Table of Contents
+
+- [Usage requirements](#usage-requirements)
+- [Installation instructions](#installation-instructions)
+- [Quick start instructions](#quick-start-instructions)
+
+## Usage requirements
+
+By default, this plugin only runs for deployments to the production stage. If you'd like to customize this behavior, you can set the `versionTrackerStages` custom variable.
+
+## Installation instructions
+
+[Install the Serverless Framework](https://serverless.com/framework/docs/providers/aws/guide/installation/) if you haven't already. Then choose your own adventure to install the plugin.
 
 #### Install using Serverless plugin manager
+
 ```bash
 serverless plugin install --name serverless-version-tracker
 ```
@@ -26,11 +40,7 @@ plugins:
   - serverless-version-tracker
 ```
 
-## Configuration
-
-By default, this plugin only runs for deployments to the production stage. If you'd like to customize this behavior, you can set the `versionTrackerStages` custom variable.
-
-## Usage
+## Quick start instructions
 
 1. Ensure that you have committed all of your changes to Git. The deploy will be aborted if the Git working directory is not clean. This prevents the possibility of deploying uncommitted / untraceable / volatile code.
 2. Run a deploy as normal (i.e. `sls deploy --stage production`). The plugin will automatically tag your local Git repository with the Lambda function name and new version.
