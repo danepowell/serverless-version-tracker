@@ -34,33 +34,35 @@ class ServerlessPlugin {
     if (!this.shouldRun()) {
       return;
     }
-    const arn = await this.getArn();
-    if (arn === undefined) {
+    const arns = await this.getArns();
+    if (len(arns) === 0) {
       throw new Error('Serverless Version Tracker error: cannot retrieve deployed ARN');
     }
-    const regex = /([-\w]*):(\d*)$/;
-    const name = arn.match(regex)[1];
-    const version = arn.match(regex)[2];
-    const tag = `${name}-${version}`;
-    this.serverless.cli.log(`Creating local git tag '${tag}'...`);
-    const { stdout, stderr } = await exec(`git tag ${tag}`);
-    if (stdout || stderr) {
-      throw new Error(`stdout: ${stdout}; stderr: ${stderr}`);
-    }
+    arns.forEach(async (arn) => {
+      const regex = /([-\w]*):(\d*)$/;
+      const name = arn.match(regex)[1];
+      const version = arn.match(regex)[2];
+      const tag = `${name}-${version}`;
+      this.serverless.cli.log(`Creating local git tag '${tag}'...`);
+      const { stdout, stderr } = await exec(`git tag ${tag}`);
+      if (stdout || stderr) {
+        throw new Error(`stdout: ${stdout}; stderr: ${stderr}`);
+      }
+    });
   }
 
-  async getArn() {
+  async getArns() {
     const resp = await this.provider.request('CloudFormation', 'describeStacks', { StackName: this.provider.naming.getStackName(this.stage) });
     const output = resp.Stacks[0].Outputs;
-    let arn;
-    let arns;
+    let arns = [];
+    let filteredOutputs;
     try {
-      arns = output.filter(entry => entry.OutputKey.match('LambdaFunctionQualifiedArn'));
+      filteredOutputs = output.filter(entry => entry.OutputKey.match('LambdaFunctionQualifiedArn'));
     } catch (error) {
-      return arn;
+      return arns;
     }
-    arns.forEach((entry) => { arn = entry.OutputValue; });
-    return arn;
+    filteredOutputs.forEach((entry) => { arns.push(entry.OutputValue) });
+    return arns
   }
 
   shouldRun() {
