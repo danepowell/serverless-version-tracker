@@ -35,7 +35,7 @@ class ServerlessPlugin {
       return;
     }
     const arns = await this.getArns();
-    if (len(arns) === 0) {
+    if (arns.length === 0) {
       throw new Error('Serverless Version Tracker error: cannot retrieve deployed ARN');
     }
     arns.forEach(async (arn) => {
