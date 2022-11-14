@@ -1,6 +1,6 @@
 {
   "name": "serverless-version-tracker",
-  "version": "1.0.1",
+  "version": "1.1.0",
   "description": "Simple serverless plugin for tracking deployed versions of code",
   "main": "index.js",
   "scripts": {
